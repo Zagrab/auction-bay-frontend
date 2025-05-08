@@ -74,17 +74,15 @@ const LoginPage: React.FC = () => {
             {error && (
               <p className="text-center text-red-600 text-sm">{error}</p>
             )}
+            <Button
+              type="submit"
+              variant="highlight"
+              className="w-full h-[40px] rounded-2xl font-medium text-base leading-6 mt-4 cursor-pointer"
+              disabled={loading}
+            >
+              {loading ? 'Logging in…' : 'Login'}
+            </Button>
           </div>
-
-          {/* Login button */}
-          <Button
-            type="submit"
-            variant="highlight"
-            className="w-full h-[40px] rounded-2xl font-medium text-base leading-6 mt-4"
-            disabled={loading}
-          >
-            {loading ? 'Logging in…' : 'Login'}
-          </Button>
         </form>
 
         {/* Sign up link */}

@@ -16,7 +16,7 @@ export function useSignIn() {
     try {
       const token = await signIn(payload);
       login(token);              
-      navigate('/');      // redirect on success
+      navigate('/my-auctions');      // redirect on success
       console.log('Access Token:', token);  
       return true;
     } catch (err: any) {
