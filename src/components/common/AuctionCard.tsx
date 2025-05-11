@@ -11,7 +11,7 @@ interface AuctionCardProps {
   title: string
   price: number
   image?: string | null
-  status?: 'in_progress' | 'winning'
+  status?: 'in_progress' | 'winning' | 'done'
   endDate: string
 }
 
@@ -24,10 +24,16 @@ const AuctionCard: React.FC<AuctionCardProps> = ({
 }) => {
   const imageUrl = image ? `${api.defaults.baseURL}${image}` : placeholderImage
 
-  const statusLabel = status === 'winning' ? 'Winning' : 'In progress'
+  const statusLabel =
+    status === 'winning' ? 'Winning' :
+    status === 'done' ? 'Done' :
+    'In progress'
+
   const statusColor =
     status === 'winning'
       ? 'bg-green-100 text-green-700'
+      : status === 'done'
+      ? 'bg-black text-white'
       : 'bg-yellow-100 text-yellow-800'
 
   const timeLeft = dayjs().to(dayjs(endDate))
@@ -42,10 +48,13 @@ const AuctionCard: React.FC<AuctionCardProps> = ({
         >
           {statusLabel}
         </span>
-        <span className="flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full text-gray-800">
-          {timeLeft}
-          <FiClock size={10} className="text-gray-500" />
-        </span>
+
+        {status !== 'done' && (
+          <span className="flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full text-gray-800">
+            {timeLeft}
+            <FiClock size={10} className="text-gray-500" />
+          </span>
+        )}
       </div>
 
       <h3 className="text-sm font-light mb-1 line-clamp-1">{title}</h3>
@@ -57,7 +66,7 @@ const AuctionCard: React.FC<AuctionCardProps> = ({
           alt={title}
           onError={(e) => {
             const target = e.target as HTMLImageElement
-            target.onerror = null 
+            target.onerror = null
             target.src = placeholderImage
           }}
           className="w-full h-full object-cover"
