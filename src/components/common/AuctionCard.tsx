@@ -3,6 +3,7 @@ import { api } from '../../services/api'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { FiClock } from 'react-icons/fi'
+import placeholderImage from '../../assets/images/placeholder.jpg'
 
 dayjs.extend(relativeTime)
 
@@ -21,7 +22,7 @@ const AuctionCard: React.FC<AuctionCardProps> = ({
   status = 'in_progress',
   endDate,
 }) => {
-  const imageUrl = image ? `${api.defaults.baseURL}${image}` : '/placeholder.jpg'
+  const imageUrl = image ? `${api.defaults.baseURL}${image}` : placeholderImage
 
   const statusLabel = status === 'winning' ? 'Winning' : 'In progress'
   const statusColor =
@@ -29,7 +30,7 @@ const AuctionCard: React.FC<AuctionCardProps> = ({
       ? 'bg-green-100 text-green-700'
       : 'bg-yellow-100 text-yellow-800'
 
-  const timeLeft = dayjs().to(dayjs(endDate)) // e.g. "in 2 months"
+  const timeLeft = dayjs().to(dayjs(endDate))
 
   return (
     <div
@@ -54,6 +55,11 @@ const AuctionCard: React.FC<AuctionCardProps> = ({
         <img
           src={imageUrl}
           alt={title}
+          onError={(e) => {
+            const target = e.target as HTMLImageElement
+            target.onerror = null 
+            target.src = placeholderImage
+          }}
           className="w-full h-full object-cover"
         />
       </div>
