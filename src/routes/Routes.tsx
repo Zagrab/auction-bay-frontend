@@ -7,6 +7,9 @@ import RegisterPage   from '../pages/RegisterPage'
 import MyAuctionsPage from '../pages/MyAuctionsPage'
 import RequireAuth    from '../components/RequireAuth'
 import Navigation     from '../layouts/Navigation'
+import AuctionsPage from '../pages/AuctionsPage'
+import BiddingPage from '../pages/BiddingPage'
+import WonPage from '../pages/WonPage'
 
 const AppRoutes: React.FC = () => (
   <Routes>
@@ -24,6 +27,9 @@ const AppRoutes: React.FC = () => (
       }
     >
       <Route path="/my-auctions" element={<MyAuctionsPage />} />
+      <Route path="/auctions"   element={<AuctionsPage />} />
+      <Route path="/bidding"   element={<BiddingPage />} />
+      <Route path="/won"   element={<WonPage />} />
     </Route>
   </Routes>
 )
