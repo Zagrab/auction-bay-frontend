@@ -10,11 +10,13 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
-  const [token, setToken] = useState<string | null>(() => {
-    return localStorage.getItem('access_token');
-  });
+  const storedToken = localStorage.getItem('access_token'); // ✅ read immediately
+  const [token, setToken] = useState<string | null>(storedToken);
 
-  // Whenever token changes, set it on axios and localStorage
+  if (storedToken) {
+    api.defaults.headers.common.Authorization = `Bearer ${storedToken}`;
+  }
+
   useEffect(() => {
     if (token) {
       api.defaults.headers.common.Authorization = `Bearer ${token}`;

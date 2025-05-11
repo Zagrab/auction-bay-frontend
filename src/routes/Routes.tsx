@@ -1,30 +1,31 @@
 // src/routes/Routes.tsx
 import React from 'react'
-import { Routes as Switch, Route } from 'react-router-dom'
-import LandingPage     from '../pages/LandingPage'
-import LoginPage       from '../pages/LoginPage'
-import RegisterPage    from '../pages/RegisterPage'
-import MyAuctionsPage  from '../pages/MyAuctionsPage'
-import RequireAuth     from '../components/RequireAuth'
+import { Routes, Route } from 'react-router-dom'
+import LandingPage    from '../pages/LandingPage'
+import LoginPage      from '../pages/LoginPage'
+import RegisterPage   from '../pages/RegisterPage'
+import MyAuctionsPage from '../pages/MyAuctionsPage'
+import RequireAuth    from '../components/RequireAuth'
+import Navigation     from '../layouts/Navigation'
 
-const Routes: React.FC = () => (
-  <Switch>
+const AppRoutes: React.FC = () => (
+  <Routes>
     {/* public */}
-    <Route path="/"        element={<LandingPage />}   />
-    <Route path="/login"   element={<LoginPage />}     />
-    <Route path="/register" element={<RegisterPage />}  />
+    <Route path="/"        element={<LandingPage />} />
+    <Route path="/login"   element={<LoginPage />}   />
+    <Route path="/register" element={<RegisterPage />} />
 
-    {/* private */}
+    {/* private with Navigation */}
     <Route
-      path="/my-auctions"
       element={
         <RequireAuth>
-          <MyAuctionsPage />
+          <Navigation />
         </RequireAuth>
       }
-    />
-
-  </Switch>
+    >
+      <Route path="/my-auctions" element={<MyAuctionsPage />} />
+    </Route>
+  </Routes>
 )
 
-export default Routes
+export default AppRoutes
