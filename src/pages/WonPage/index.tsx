@@ -27,9 +27,11 @@ const WonPage: React.FC = () => {
     <div className="px-6">
       {wonAuctions.length === 0 ? (
         <div className="flex flex-col items-center justify-center mt-40 text-center text-gray-700">
-          <h2 className="text-xl font-semibold mb-2">No won auctions yet</h2>
-          <p className="text-sm text-gray-500 max-w-md">
-            Once you win auctions, they'll appear here.
+          <h2 className="text-xl font-semibold mb-2">Nothing here yet?</h2>
+          <p className="text-sm text-gray-500 max-w-xs">
+            When you win auction items<br />
+            they’ll be displayed here! Go on<br />
+            and bid on your favorite items!
           </p>
         </div>
       ) : (
@@ -40,12 +42,13 @@ const WonPage: React.FC = () => {
               title={auction.title}
               image={auction.image}
               price={auction.winningBid}
-              endDate={new Date().toISOString()} 
+              endDate={new Date().toISOString()}
               status="done"
             />
           ))}
         </div>
       )}
+
     </div>
   )
 }
