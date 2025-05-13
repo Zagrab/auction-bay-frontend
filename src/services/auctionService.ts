@@ -44,3 +44,18 @@ export const fetchBiddingAuctions = async (): Promise<BiddingAuction[]> => {
   return res.data
 }
 
+export const fetchMyAuctions = async (): Promise<Auction[]> => {
+  const res = await api.get<Auction[]>('/auctions/me/my-auctions')
+  return res.data
+}
+
+export const createAuction = async (formData: FormData): Promise<void> => {
+  await api.post('/auctions/me/auction', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+}
+
+
+

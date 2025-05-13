@@ -8,10 +8,12 @@ import logo from '../assets/images/logo.png'
 import { fetchCurrentUser, type User } from '../services/userService'
 import { useAuth } from '../contexts/AuthContext'
 import { api } from '../services/api'
+import AddAuctionModal from '../components/AddAuctionModal'
 
 const Navigation: React.FC = () => {
     const [user, setUser] = useState<User | null>(null)
     const [dropdownOpen, setDropdownOpen] = useState(false)
+    const [modalOpen, setModalOpen] = useState(false)
     const location = useLocation()
     const navigate = useNavigate()
     const { logout } = useAuth()
@@ -84,8 +86,8 @@ const Navigation: React.FC = () => {
                 {/* Right section */}
                 <div className="flex items-center bg-white rounded-full px-2 py-1 gap-2 relative">
                     <button
-                        className="w-16 h-16 rounded-full flex items-center justify-center transition-transform hover:scale-105"
-                        style={{ backgroundColor: 'var(--Primary-50, #F4FF47)' }}
+                        onClick={() => setModalOpen(true)}
+                        className="w-16 h-16 rounded-full flex items-center justify-center bg-[#F4FF47] hover:bg-[#e3ee30] cursor-pointer transition"
                     >
                         <FiPlus size={24} className="text-black" />
                     </button>
@@ -116,6 +118,7 @@ const Navigation: React.FC = () => {
                     </div>
                 </div>
             </header>
+
             {/* Second row heading */}
             {(isProfileSelected || location.pathname === '/auctions') && (
                 <div className="px-6 py-4">
@@ -128,6 +131,7 @@ const Navigation: React.FC = () => {
                     </h1>
                 </div>
             )}
+
             {/* Profile sub-navigation */}
             {isProfileSelected && (
                 <div className="flex justify-center py-4">
@@ -163,9 +167,10 @@ const Navigation: React.FC = () => {
                 </div>
             )}
 
-            <main className="flex-grow">
+            <main className="flex-grow relative z-0">
                 <Outlet />
             </main>
+            {modalOpen && <AddAuctionModal onClose={() => setModalOpen(false)} />}
         </div>
     )
 }
