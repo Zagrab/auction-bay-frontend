@@ -170,7 +170,15 @@ const Navigation: React.FC = () => {
             <main className="flex-grow relative z-0">
                 <Outlet />
             </main>
-            {modalOpen && <AddAuctionModal onClose={() => setModalOpen(false)} />}
+            {modalOpen && (
+                <AddAuctionModal
+                    onClose={() => setModalOpen(false)}
+                    onSuccess={() => {
+                        window.dispatchEvent(new Event('auction-added'))
+                        setModalOpen(false)
+                    }}
+                />
+            )}
         </div>
     )
 }

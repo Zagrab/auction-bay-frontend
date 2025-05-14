@@ -1,35 +1,42 @@
 // src/pages/MyAuctionsPage/index.tsx
 import React, { useEffect, useState } from 'react'
 import MyAuctionCard from '../../components/common/MyAuctionCard'
+import AddAuctionModal from '../../components/AddAuctionModal'
 import { fetchMyAuctions, type Auction } from '../../services/auctionService'
 
 const MyAuctionsPage: React.FC = () => {
   const [myAuctions, setMyAuctions] = useState<Auction[]>([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    const loadMyAuctions = async () => {
-      try {
-        const data = await fetchMyAuctions()
+  const [editingAuction, setEditingAuction] = useState<Auction | null>(null)
 
-        const sorted = [...data].sort((a, b) => {
-          const now = new Date()
-          const aDone = new Date(a.endDate) < now
-          const bDone = new Date(b.endDate) < now
-
-          if (aDone === bDone) return 0
-          return aDone ? 1 : -1
-        })
-
-        setMyAuctions(sorted)
-      } catch (error) {
-        console.error('Failed to load my auctions:', error)
-      } finally {
-        setLoading(false)
-      }
+  const loadMyAuctions = async () => {
+    try {
+      const data = await fetchMyAuctions()
+      const sorted = [...data].sort((a, b) => {
+        const now = new Date()
+        const aDone = new Date(a.endDate) < now
+        const bDone = new Date(b.endDate) < now
+        if (aDone === bDone) return 0
+        return aDone ? 1 : -1
+      })
+      setMyAuctions(sorted)
+    } catch (error) {
+      console.error('Failed to load my auctions:', error)
+    } finally {
+      setLoading(false)
     }
+  }
 
+  useEffect(() => {
     loadMyAuctions()
+  
+    const handler = () => loadMyAuctions()
+    window.addEventListener('auction-added', handler)
+  
+    return () => {
+      window.removeEventListener('auction-added', handler)
+    }
   }, [])
 
   if (loading) return <div className="text-center mt-20">Loading...</div>
@@ -47,15 +54,28 @@ const MyAuctionsPage: React.FC = () => {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-x-3 gap-y-6 mt-4">
           {myAuctions.map((auction) => (
             <MyAuctionCard
-              id={auction.id}
               key={auction.id}
+              id={auction.id}
               title={auction.title}
               image={auction.image}
               price={auction.currentHighestBid ?? auction.startingPrice}
               endDate={auction.endDate}
+              onEdit={() => setEditingAuction(auction)}
             />
           ))}
         </div>
+      )}
+
+      {editingAuction && (
+        <AddAuctionModal
+          mode="edit"
+          initialData={editingAuction}
+          onClose={() => setEditingAuction(null)}
+          onSuccess={() => {
+            setEditingAuction(null)
+            loadMyAuctions()
+          }}
+        />
       )}
     </div>
   )

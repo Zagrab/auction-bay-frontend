@@ -14,6 +14,7 @@ interface MyAuctionCardProps {
   price: number
   image?: string | null
   endDate: string
+  onEdit?: () => void
 }
 
 const MyAuctionCard: React.FC<MyAuctionCardProps> = ({
@@ -22,6 +23,7 @@ const MyAuctionCard: React.FC<MyAuctionCardProps> = ({
   price,
   image,
   endDate,
+  onEdit,
 }) => {
   const imageUrl = image ? `${api.defaults.baseURL}${image}` : placeholderImage
   const isDone = dayjs().isAfter(dayjs(endDate))
@@ -30,7 +32,7 @@ const MyAuctionCard: React.FC<MyAuctionCardProps> = ({
   const handleDelete = async () => {
     try {
       await deleteAuction(id)
-      window.location.reload() // or lift state to parent to update list
+      window.location.reload()
     } catch (err) {
       console.error('Failed to delete auction:', err)
     }
@@ -71,11 +73,17 @@ const MyAuctionCard: React.FC<MyAuctionCardProps> = ({
 
       {/* Buttons */}
       {!isDone && (
-        <div className="flex items-center ">
-          <button onClick={handleDelete} className="min-w-[48px] h-[44px] rounded-xl border border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors cursor-pointer">
+        <div className="flex items-center">
+          <button
+            onClick={handleDelete}
+            className="min-w-[48px] h-[44px] rounded-xl border border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors cursor-pointer"
+          >
             <FiTrash2 size={16} />
           </button>
-          <button className="flex-1 ml-2 h-[44px] flex items-center justify-center gap-2 text-sm bg-black text-white px-4 rounded-xl hover:opacity-90 cursor-pointer">
+          <button
+            onClick={onEdit}
+            className="flex-1 ml-2 h-[44px] flex items-center justify-center gap-2 text-sm bg-black text-white px-4 rounded-xl hover:opacity-90 cursor-pointer"
+          >
             <FiEdit2 size={16} /> Edit
           </button>
         </div>

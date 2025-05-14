@@ -61,5 +61,14 @@ export const deleteAuction = async (auctionId: number): Promise<void> => {
   await api.delete(`/auctions/me/delete/${auctionId}`)
 }
 
+export const updateAuction = async (id: number, formData: FormData): Promise<void> => {
+  await api.patch(`/auctions/me/auction/${id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+}
+
+
 
 
