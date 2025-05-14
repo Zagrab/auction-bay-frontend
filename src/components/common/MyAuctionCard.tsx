@@ -4,10 +4,12 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { FiClock, FiEdit2, FiTrash2 } from 'react-icons/fi'
 import placeholderImage from '../../assets/images/placeholder.jpg'
+import { deleteAuction } from '../../services/auctionService'
 
 dayjs.extend(relativeTime)
 
 interface MyAuctionCardProps {
+  id: number
   title: string
   price: number
   image?: string | null
@@ -15,6 +17,7 @@ interface MyAuctionCardProps {
 }
 
 const MyAuctionCard: React.FC<MyAuctionCardProps> = ({
+  id,
   title,
   price,
   image,
@@ -23,6 +26,15 @@ const MyAuctionCard: React.FC<MyAuctionCardProps> = ({
   const imageUrl = image ? `${api.defaults.baseURL}${image}` : placeholderImage
   const isDone = dayjs().isAfter(dayjs(endDate))
   const timeLeft = dayjs().to(dayjs(endDate))
+
+  const handleDelete = async () => {
+    try {
+      await deleteAuction(id)
+      window.location.reload() // or lift state to parent to update list
+    } catch (err) {
+      console.error('Failed to delete auction:', err)
+    }
+  }
 
   return (
     <div className="rounded-2xl bg-white shadow-sm border border-gray-100 p-3 w-full transition-transform hover:scale-[1.015] hover:shadow-md flex flex-col justify-between">
@@ -60,7 +72,7 @@ const MyAuctionCard: React.FC<MyAuctionCardProps> = ({
       {/* Buttons */}
       {!isDone && (
         <div className="flex items-center ">
-          <button className="min-w-[48px] h-[44px] rounded-xl border border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors cursor-pointer">
+          <button onClick={handleDelete} className="min-w-[48px] h-[44px] rounded-xl border border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors cursor-pointer">
             <FiTrash2 size={16} />
           </button>
           <button className="flex-1 ml-2 h-[44px] flex items-center justify-center gap-2 text-sm bg-black text-white px-4 rounded-xl hover:opacity-90 cursor-pointer">

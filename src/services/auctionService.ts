@@ -57,5 +57,9 @@ export const createAuction = async (formData: FormData): Promise<void> => {
   })
 }
 
+export const deleteAuction = async (auctionId: number): Promise<void> => {
+  await api.delete(`/auctions/me/delete/${auctionId}`)
+}
+
 
 
