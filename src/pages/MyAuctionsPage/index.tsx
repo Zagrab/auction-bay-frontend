@@ -11,7 +11,17 @@ const MyAuctionsPage: React.FC = () => {
     const loadMyAuctions = async () => {
       try {
         const data = await fetchMyAuctions()
-        setMyAuctions(data)
+
+        const sorted = [...data].sort((a, b) => {
+          const now = new Date()
+          const aDone = new Date(a.endDate) < now
+          const bDone = new Date(b.endDate) < now
+
+          if (aDone === bDone) return 0
+          return aDone ? 1 : -1
+        })
+
+        setMyAuctions(sorted)
       } catch (error) {
         console.error('Failed to load my auctions:', error)
       } finally {
