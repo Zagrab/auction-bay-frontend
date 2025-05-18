@@ -77,5 +77,17 @@ export const uploadProfilePicture = async (formData: FormData): Promise<void> =>
   })
 }
 
+export const fetchAuctionById = async (id: number): Promise<Auction & {
+  bids: {
+    id: number
+    amount: number
+    createdAt: string
+    userId: number
+  }[]
+}> => {
+  const res = await api.get(`/auctions/${id}`)
+  return res.data
+}
+
 
 
