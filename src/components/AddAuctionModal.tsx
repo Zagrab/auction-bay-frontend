@@ -77,7 +77,7 @@ const AddAuctionModal: React.FC<AddAuctionModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center">
-      <div className="bg-white rounded-2xl w-full max-w-xl p-6 shadow-lg relative z-50">
+      <div className="bg-white rounded-2xl w-[533px] h-[647px] p-6 shadow-lg relative z-50 overflow-hidden">
         <h2 className="text-lg font-bold mb-4">
           {mode === 'edit' ? 'Edit auction' : 'Add auction'}
         </h2>
@@ -106,7 +106,7 @@ const AddAuctionModal: React.FC<AddAuctionModalProps> = ({
           placeholder="Write item name here"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full border rounded px-4 py-2 mb-4"
+          className="w-full border border-[#DDE9E6] rounded-xl px-4 py-2 mb-4"
         />
 
         {/* Description */}
@@ -115,7 +115,7 @@ const AddAuctionModal: React.FC<AddAuctionModalProps> = ({
           placeholder="Write description here…"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full border rounded px-4 py-2 mb-4"
+          className="w-full border border-[#DDE9E6] rounded-xl px-4 py-2 mb-4 resize-none h-34"
         />
 
         <div className={`flex gap-3 mb-4 ${mode === 'edit' ? 'w-full' : ''}`}>
@@ -128,7 +128,7 @@ const AddAuctionModal: React.FC<AddAuctionModalProps> = ({
                 placeholder="Price"
                 value={startingPrice}
                 onChange={(e) => setStartingPrice(e.target.valueAsNumber || '')}
-                className="w-full border rounded px-4 py-2"
+                className="w-full border border-[#DDE9E6] rounded-xl px-4 py-2"
               />
             </div>
           )}
@@ -140,7 +140,7 @@ const AddAuctionModal: React.FC<AddAuctionModalProps> = ({
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="w-full border rounded px-4 py-2"
+              className="w-full border border-[#DDE9E6] rounded-xl px-4 py-2"
             />
           </div>
         </div>

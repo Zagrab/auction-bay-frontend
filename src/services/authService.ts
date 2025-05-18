@@ -31,3 +31,19 @@ export function signUp(payload: SignUpPayload) {
     .post<SignUpResponse>('/auth/signup/', payload)
     .then(res => res.data.access_token);
 }
+
+export const updateUser = async (payload: {
+  firstName: string
+  lastName: string
+  email: string
+}): Promise<void> => {
+  await api.patch('/auth/me/update-user', payload)
+}
+
+export const updatePassword = async (payload: {
+  oldPassword: string
+  newPassword: string
+  confirmPassword: string
+}): Promise<void> => {
+  await api.post('/auth/me/update-password', payload)
+}

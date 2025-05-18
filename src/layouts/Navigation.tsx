@@ -2,18 +2,20 @@ import React, { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { PiHouseLine } from 'react-icons/pi'
 import { MdOutlinePerson } from 'react-icons/md'
-import { FiPlus, FiLogOut } from 'react-icons/fi'
+import { FiPlus } from 'react-icons/fi'
 import { LuSettings2 } from 'react-icons/lu'
 import logo from '../assets/images/logo.png'
 import { fetchCurrentUser, type User } from '../services/userService'
 import { useAuth } from '../contexts/AuthContext'
 import { api } from '../services/api'
 import AddAuctionModal from '../components/AddAuctionModal'
+import ProfileSettingsModal from '../components/ProfileSettingsModal'
 
 const Navigation: React.FC = () => {
     const [user, setUser] = useState<User | null>(null)
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const [modalOpen, setModalOpen] = useState(false)
+    const [profileModalOpen, setProfileModalOpen] = useState(false)
     const location = useLocation()
     const navigate = useNavigate()
     const { logout } = useAuth()
@@ -100,16 +102,21 @@ const Navigation: React.FC = () => {
                             onClick={() => setDropdownOpen(prev => !prev)}
                             className="w-16 h-16 rounded-full object-cover cursor-pointer"
                         />
-
                         {dropdownOpen && (
                             <div className="absolute right-0 mt-2 w-56 bg-white shadow-lg rounded-2xl z-50 py-4 px-4">
-                                <button className="flex items-center gap-2 w-full text-left text-black text-base px-2 py-2 rounded-lg hover:bg-gray-100 transition">
+                                <button
+                                    onClick={() => {
+                                        setProfileModalOpen(true)
+                                        setDropdownOpen(false)
+                                    }}
+                                    className="flex items-center gap-2 w-full text-left text-black text-base px-2 py-2 rounded-lg hover:bg-gray-100 transition cursor-pointer"
+                                >
                                     <LuSettings2 size={18} />
                                     Profile settings
                                 </button>
                                 <button
                                     onClick={logout}
-                                    className="w-full mt-3 border border-black rounded-full text-black text-base py-2 hover:bg-gray-50 transition"
+                                    className="w-full mt-3 border border-black rounded-full text-black text-base py-2 hover:bg-gray-50 transition cursor-pointer"
                                 >
                                     Log out
                                 </button>
@@ -170,12 +177,27 @@ const Navigation: React.FC = () => {
             <main className="flex-grow relative z-0">
                 <Outlet />
             </main>
+
             {modalOpen && (
                 <AddAuctionModal
                     onClose={() => setModalOpen(false)}
                     onSuccess={() => {
                         window.dispatchEvent(new Event('auction-added'))
                         setModalOpen(false)
+                    }}
+                />
+            )}
+
+            {profileModalOpen && user && (
+                <ProfileSettingsModal
+                    onClose={() => setProfileModalOpen(false)}
+                    onSuccess={() => {
+                        fetchCurrentUser().then(setUser).catch(console.error)
+                    }}
+                    initialData={{
+                        name: user.firstName,
+                        surname: user.lastName,
+                        email: user.email,
                     }}
                 />
             )}
