@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { api } from '../../services/api'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -8,6 +9,7 @@ import placeholderImage from '../../assets/images/placeholder.jpg'
 dayjs.extend(relativeTime)
 
 interface AuctionCardProps {
+  id: number
   title: string
   price: number
   image?: string | null
@@ -16,12 +18,14 @@ interface AuctionCardProps {
 }
 
 const AuctionCard: React.FC<AuctionCardProps> = ({
+  id,
   title,
   price,
   image,
   status = 'in_progress',
   endDate,
 }) => {
+  const navigate = useNavigate()
   const imageUrl = image ? `${api.defaults.baseURL}${image}` : placeholderImage
 
   const statusLabel =
@@ -45,12 +49,14 @@ const AuctionCard: React.FC<AuctionCardProps> = ({
   const timeLeft = dayjs().to(dayjs(endDate))
 
   return (
-    <div className="rounded-2xl bg-white shadow-sm border border-gray-100 p-3 w-full hover:shadow-md cursor-pointer transition-shadow">
+    <div
+      onClick={() => navigate(`/auctions/${id}`)}
+      className="rounded-2xl bg-white shadow-sm border border-gray-100 p-3 w-full hover:shadow-md cursor-pointer transition-shadow"
+    >
       <div className="flex justify-between items-center mb-2">
         <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${statusColor}`}>
           {statusLabel}
         </span>
-
         {status !== 'done' && (
           <span className="flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full text-gray-800">
             {timeLeft}

@@ -39,6 +39,7 @@ const WonPage: React.FC = () => {
           {wonAuctions.map((auction) => (
             <AuctionCard
               key={auction.id}
+              id={auction.id}
               title={auction.title}
               image={auction.image}
               price={auction.winningBid}

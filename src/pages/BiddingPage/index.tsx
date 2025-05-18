@@ -37,6 +37,7 @@ const BiddingPage: React.FC = () => {
           {auctions.map((auction) => (
             <AuctionCard
               key={auction.id}
+              id={auction.id}
               title={auction.title}
               image={auction.image}
               price={auction.myHighestBid}

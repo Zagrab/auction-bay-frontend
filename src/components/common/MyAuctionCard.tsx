@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { api } from '../../services/api'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -25,11 +26,13 @@ const MyAuctionCard: React.FC<MyAuctionCardProps> = ({
   endDate,
   onEdit,
 }) => {
+  const navigate = useNavigate()
   const imageUrl = image ? `${api.defaults.baseURL}${image}` : placeholderImage
   const isDone = dayjs().isAfter(dayjs(endDate))
   const timeLeft = dayjs().to(dayjs(endDate))
 
-  const handleDelete = async () => {
+  const handleDelete = async (e: React.MouseEvent) => {
+    e.stopPropagation()
     try {
       await deleteAuction(id)
       window.location.reload()
@@ -38,8 +41,20 @@ const MyAuctionCard: React.FC<MyAuctionCardProps> = ({
     }
   }
 
+  const handleEdit = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (onEdit) onEdit()
+  }
+
+  const handleCardClick = () => {
+    navigate(`/auctions/${id}`)
+  }
+
   return (
-    <div className="rounded-2xl bg-white shadow-sm border border-gray-100 p-3 w-full hover:shadow-md flex flex-col justify-between cursor-pointer transition-shadow">
+    <div
+      onClick={handleCardClick}
+      className="rounded-2xl bg-white shadow-sm border border-gray-100 p-3 w-full hover:shadow-md flex flex-col justify-between cursor-pointer transition-shadow"
+    >
       {/* Top row */}
       <div className="flex justify-between items-center mb-2">
         <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${isDone ? 'bg-black text-white' : 'bg-yellow-100 text-yellow-800'}`}>
@@ -81,7 +96,7 @@ const MyAuctionCard: React.FC<MyAuctionCardProps> = ({
             <FiTrash2 size={16} />
           </button>
           <button
-            onClick={onEdit}
+            onClick={handleEdit}
             className="flex-1 ml-2 h-[44px] flex items-center justify-center gap-2 text-sm bg-black text-white px-4 rounded-xl hover:opacity-90 cursor-pointer"
           >
             <FiEdit2 size={16} /> Edit

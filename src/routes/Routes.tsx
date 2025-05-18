@@ -10,6 +10,7 @@ import Navigation     from '../layouts/Navigation'
 import AuctionsPage from '../pages/AuctionsPage'
 import BiddingPage from '../pages/BiddingPage'
 import WonPage from '../pages/WonPage'
+import AuctionDetailsPage from '../pages/AuctionDetailsPage'
 
 const AppRoutes: React.FC = () => (
   <Routes>
@@ -28,6 +29,7 @@ const AppRoutes: React.FC = () => (
     >
       <Route path="/my-auctions" element={<MyAuctionsPage />} />
       <Route path="/auctions"   element={<AuctionsPage />} />
+      <Route path="/auctions/:id" element={<AuctionDetailsPage />} />
       <Route path="/bidding"   element={<BiddingPage />} />
       <Route path="/won"   element={<WonPage />} />
     </Route>
