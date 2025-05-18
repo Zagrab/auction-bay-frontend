@@ -39,7 +39,7 @@ const MyAuctionCard: React.FC<MyAuctionCardProps> = ({
   }
 
   return (
-    <div className="rounded-2xl bg-white shadow-sm border border-gray-100 p-3 w-full transition-transform hover:scale-[1.015] hover:shadow-md flex flex-col justify-between">
+    <div className="rounded-2xl bg-white shadow-sm border border-gray-100 p-3 w-full hover:shadow-md flex flex-col justify-between cursor-pointer transition-shadow">
       {/* Top row */}
       <div className="flex justify-between items-center mb-2">
         <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${isDone ? 'bg-black text-white' : 'bg-yellow-100 text-yellow-800'}`}>

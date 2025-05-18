@@ -139,7 +139,6 @@ const Navigation: React.FC = () => {
                 </div>
             )}
 
-            {/* Profile sub-navigation */}
             {isProfileSelected && (
                 <div className="flex justify-center py-4">
                     <div className="inline-flex bg-[var(--Gray-10,#EDF4F2)] p-1 rounded-full">
@@ -148,7 +147,7 @@ const Navigation: React.FC = () => {
                             className={`px-6 py-2 text-sm font-medium transition-colors rounded-full ${location.pathname === '/my-auctions'
                                 ? 'bg-black text-white'
                                 : 'text-black'
-                                }`}
+                                } cursor-pointer`}
                         >
                             My Auctions
                         </button>
@@ -157,7 +156,7 @@ const Navigation: React.FC = () => {
                             className={`px-6 py-2 text-sm font-medium transition-colors rounded-full ${location.pathname === '/bidding'
                                 ? 'bg-black text-white'
                                 : 'text-black'
-                                }`}
+                                } cursor-pointer`}
                         >
                             Bidding
                         </button>
@@ -166,7 +165,7 @@ const Navigation: React.FC = () => {
                             className={`px-6 py-2 text-sm font-medium transition-colors rounded-full ${location.pathname === '/won'
                                 ? 'bg-black text-white'
                                 : 'text-black'
-                                }`}
+                                } cursor-pointer`}
                         >
                             Won
                         </button>

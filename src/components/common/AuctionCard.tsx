@@ -28,24 +28,24 @@ const AuctionCard: React.FC<AuctionCardProps> = ({
     status === 'winning'
       ? 'Winning'
       : status === 'done'
-      ? 'Done'
-      : status === 'outbid'
-      ? 'Outbid'
-      : 'In progress'
+        ? 'Done'
+        : status === 'outbid'
+          ? 'Outbid'
+          : 'In progress'
 
   const statusColor =
     status === 'winning'
       ? 'bg-green-100 text-green-700'
       : status === 'done'
-      ? 'bg-black text-white'
-      : status === 'outbid'
-      ? 'bg-red-100 text-red-700'
-      : 'bg-yellow-100 text-yellow-800'
+        ? 'bg-black text-white'
+        : status === 'outbid'
+          ? 'bg-red-100 text-red-700'
+          : 'bg-yellow-100 text-yellow-800'
 
   const timeLeft = dayjs().to(dayjs(endDate))
 
   return (
-    <div className="rounded-2xl bg-white shadow-sm border border-gray-100 p-3 w-full transition-transform hover:scale-[1.015] hover:shadow-md cursor-pointer">
+    <div className="rounded-2xl bg-white shadow-sm border border-gray-100 p-3 w-full hover:shadow-md cursor-pointer transition-shadow">
       <div className="flex justify-between items-center mb-2">
         <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${statusColor}`}>
           {statusLabel}
