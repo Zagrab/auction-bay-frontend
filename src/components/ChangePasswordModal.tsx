@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { updatePassword } from '../../services/authService'
+import { updatePassword } from '../services/authService'
 
 interface ChangePasswordModalProps {
   onClose: () => void

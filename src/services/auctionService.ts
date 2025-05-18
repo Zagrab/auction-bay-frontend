@@ -69,6 +69,13 @@ export const updateAuction = async (id: number, formData: FormData): Promise<voi
   })
 }
 
+export const uploadProfilePicture = async (formData: FormData): Promise<void> => {
+  await api.post('/auth/me/picture', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+}
 
 
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { updateUser } from '../services/authService'
-import ChangePasswordModal from './common/ChangePasswordModal'
+import ChangePasswordModal from './ChangePasswordModal'
+import ChangeProfilePictureModal from './ChangeProfilePictureModal'
 
 interface ProfileSettingsModalProps {
     onClose: () => void
@@ -18,6 +19,7 @@ const ProfileSettingsModal: React.FC<ProfileSettingsModalProps> = ({
     const [email, setEmail] = useState(initialData.email)
     const [loading, setLoading] = useState(false)
     const [showPasswordModal, setShowPasswordModal] = useState(false)
+    const [showPictureModal, setShowPictureModal] = useState(false)
 
     const handleSave = async () => {
         try {
@@ -74,7 +76,10 @@ const ProfileSettingsModal: React.FC<ProfileSettingsModalProps> = ({
                     >
                         Change password
                     </p>
-                    <p className="text-black text-sm mb-6 cursor-pointer hover:underline">
+                    <p
+                        className="text-black text-sm mb-6 cursor-pointer hover:underline"
+                        onClick={() => setShowPictureModal(true)}
+                    >
                         Change profile picture
                     </p>
 
@@ -99,6 +104,10 @@ const ProfileSettingsModal: React.FC<ProfileSettingsModalProps> = ({
 
             {showPasswordModal && (
                 <ChangePasswordModal onClose={() => setShowPasswordModal(false)} />
+            )}
+
+            {showPictureModal && (
+                <ChangeProfilePictureModal onClose={() => setShowPictureModal(false)} />
             )}
         </>
     )
