@@ -27,26 +27,21 @@ const AuctionCard: React.FC<AuctionCardProps> = ({
 }) => {
   const navigate = useNavigate()
   const imageUrl = image ? `${api.defaults.baseURL}${image}` : placeholderImage
-
-  const statusLabel =
-    status === 'winning'
-      ? 'Winning'
-      : status === 'done'
-        ? 'Done'
-        : status === 'outbid'
-          ? 'Outbid'
-          : 'In progress'
-
-  const statusColor =
-    status === 'winning'
-      ? 'bg-green-100 text-green-700'
-      : status === 'done'
-        ? 'bg-black text-white'
-        : status === 'outbid'
-          ? 'bg-red-100 text-red-700'
-          : 'bg-yellow-100 text-yellow-800'
-
   const timeLeft = dayjs().to(dayjs(endDate))
+
+  let statusLabel = 'In progress'
+  let statusColor = 'bg-[#F9FF90] text-black'
+
+  if (status === 'done') {
+    statusLabel = 'Done'
+    statusColor = 'bg-black text-white'
+  } else if (status === 'winning') {
+    statusLabel = 'Winning'
+    statusColor = 'bg-[#ADFF90] text-black'
+  } else if (status === 'outbid') {
+    statusLabel = 'Outbid'
+    statusColor = 'bg-[#FFAA98] text-black'
+  }
 
   return (
     <div
@@ -54,19 +49,19 @@ const AuctionCard: React.FC<AuctionCardProps> = ({
       className="rounded-2xl bg-white shadow-sm border border-gray-100 p-3 w-full hover:shadow-md cursor-pointer transition-shadow"
     >
       <div className="flex justify-between items-center mb-2">
-        <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${statusColor}`}>
+        <span className={`font-inter font-light text-[12px] leading-[24px] px-2 rounded-full ${statusColor}`}>
           {statusLabel}
         </span>
         {status !== 'done' && (
-          <span className="flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full text-gray-800">
+          <span className="flex items-center gap-1 font-inter font-light text-[12px] leading-[24px] text-gray-800">
             {timeLeft}
-            <FiClock size={10} className="text-gray-500" />
+            <FiClock size={12} className="text-gray-500" />
           </span>
         )}
       </div>
 
-      <h3 className="text-sm font-light mb-1 line-clamp-1">{title}</h3>
-      <p className="text-base font-medium mb-2">{price} €</p>
+      <h3 className="text-sm font-light mb-1 font-inter line-clamp-1">{title}</h3>
+      <p className="text-base font-medium mb-2 font-inter">{price} €</p>
 
       <div className="rounded-xl overflow-hidden bg-gray-100 w-full aspect-[4/3]">
         <img

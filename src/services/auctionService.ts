@@ -89,5 +89,8 @@ export const fetchAuctionById = async (id: number): Promise<Auction & {
   return res.data
 }
 
+export const placeBidOnAuction = async (auctionId: number, amount: number): Promise<void> => {
+  await api.post(`/auctions/${auctionId}/bid`, { amount })
+}
 
 

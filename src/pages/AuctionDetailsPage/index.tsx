@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { fetchAuctionById } from '../../services/auctionService'
+import { fetchAuctionById, placeBidOnAuction } from '../../services/auctionService'
 import { fetchCurrentUser, type User } from '../../services/userService'
 import { api } from '../../services/api'
 import placeholder from '../../assets/images/placeholder.jpg'
@@ -17,24 +17,36 @@ const AuctionDetailsPage: React.FC = () => {
   const [loading, setLoading] = useState(true)
   const [bidAmount, setBidAmount] = useState('')
 
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const [auctionData, userData] = await Promise.all([
-          fetchAuctionById(Number(id)),
-          fetchCurrentUser()
-        ])
-        setAuction(auctionData)
-        setCurrentUser(userData)
-      } catch (err) {
-        console.error('Failed to load auction or user:', err)
-      } finally {
-        setLoading(false)
-      }
+  const loadData = async () => {
+    try {
+      const [auctionData, userData] = await Promise.all([
+        fetchAuctionById(Number(id)),
+        fetchCurrentUser()
+      ])
+      setAuction(auctionData)
+      setCurrentUser(userData)
+    } catch (err) {
+      console.error('Failed to load auction or user:', err)
+    } finally {
+      setLoading(false)
     }
+  }
 
+  useEffect(() => {
     if (id) loadData()
   }, [id])
+
+  const handlePlaceBid = async () => {
+    if (!bidAmount || isNaN(Number(bidAmount))) return alert('Enter a valid bid amount')
+    try {
+      await placeBidOnAuction(Number(id), Number(bidAmount))
+      setBidAmount('')
+      await loadData()
+    } catch (err) {
+      console.error('Failed to place bid:', err)
+      alert('Failed to place bid.')
+    }
+  }
 
   if (loading) return <div className="p-6">Loading...</div>
   if (!auction) return <div className="p-6 text-red-600">Auction not found.</div>
@@ -47,7 +59,7 @@ const AuctionDetailsPage: React.FC = () => {
   const isWinning = myBid?.amount === highestBid
 
   let statusLabel = 'In progress'
-  let statusColor = 'bg-yellow-100 text-yellow-800'
+  let statusColor = 'bg-[#F9FF90] text-black' 
 
   if (isDone) {
     statusLabel = 'Done'
@@ -55,19 +67,19 @@ const AuctionDetailsPage: React.FC = () => {
   } else if (myBid) {
     if (isWinning) {
       statusLabel = 'Winning'
-      statusColor = 'bg-green-100 text-green-700'
+      statusColor = 'bg-[#ADFF90]'
     } else {
       statusLabel = 'Outbid'
-      statusColor = 'bg-red-100 text-red-700'
+      statusColor = 'bg-[#FFAA98]' 
     }
   }
 
   const timeLeft = dayjs().to(dayjs(auction.endDate))
 
   return (
-    <div className="flex flex-col lg:flex-row p-6 gap-6">
+    <div className="flex flex-col lg:flex-row p-6 gap-6 ">
       {/* Left - Image */}
-      <div className="flex-1 rounded-2xl overflow-hidden">
+      <div className="flex-1 rounded-2xl overflow-hidden flex h-[888px]">
         <img
           src={imageUrl}
           alt={auction.title}
@@ -83,19 +95,23 @@ const AuctionDetailsPage: React.FC = () => {
       {/* Right - Info */}
       <div className="flex-1 flex flex-col gap-4">
         {/* Auction Info */}
-        <div className="bg-gray-50 p-6 rounded-2xl">
+        <div className="bg-white p-6 rounded-2xl">
           <div className="flex justify-between items-center mb-2">
-            <span className={`text-xs font-semibold px-2 py-1 rounded-full ${statusColor}`}>
+            <span
+              className={`px-2 py-1 rounded-full ${statusColor} font-inter font-light text-[16px] leading-[24px]`}
+            >
               {statusLabel}
             </span>
             {!isDone && (
-              <span className="text-xs font-medium text-gray-600 flex items-center gap-1">
-                {timeLeft} <FiClock size={12} />
+              <span
+                className="font-inter font-light text-[16px] leading-[24px] flex items-center gap-1"
+              >
+                {timeLeft} <FiClock size={16} />
               </span>
             )}
           </div>
 
-          <h1 className="mb-2 font-inter font-bold text-[32px] leading-[120%]">{auction.title}</h1>
+          <h1 className="mb-2 font-inter font-bold text-[32px] leading-[120%] mt-4">{auction.title}</h1>
 
           <p className="mb-6 font-inter font-light text-[16px] leading-6">{auction.description}</p>
 
@@ -114,7 +130,8 @@ const AuctionDetailsPage: React.FC = () => {
               placeholder="€"
             />
             <button
-              className="px-4 py-2 rounded-full text-sm font-medium hover:opacity-90"
+              onClick={handlePlaceBid}
+              className="px-4 py-2 rounded-full text-sm font-medium hover:opacity-90 cursor-pointer"
               style={{ backgroundColor: '#F4FF47' }}
             >
               Place bid
@@ -123,21 +140,30 @@ const AuctionDetailsPage: React.FC = () => {
         </div>
 
         {/* Bidding History */}
-        <div className="bg-gray-50 p-6 rounded-2xl">
+        <div className="bg-white p-6 rounded-2xl flex-grow flex flex-col">
           <h2 className="mb-4 font-inter font-bold text-[23px] leading-[120%]">
             Bidding history ({auction.bids?.length || 0})
           </h2>
 
           {auction.bids && auction.bids.length > 0 ? (
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col gap-0">
               {auction.bids.map((bid: any) => (
                 <li
                   key={bid.id}
-                  className="flex justify-between items-center text-sm bg-white p-3 rounded-xl"
+                  className="flex justify-between items-center text-sm bg-white p-3 border-b border-gray-200"
                 >
                   <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 bg-gray-300 rounded-full" />
-                    <span>User {bid.userId}</span>
+                    <img
+                      src={bid.picture ? `${api.defaults.baseURL}${bid.picture}` : placeholder}
+                      alt={`${bid.firstName} ${bid.lastName}`}
+                      className="w-6 h-6 rounded-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement
+                        target.onerror = null
+                        target.src = placeholder
+                      }}
+                    />
+                    <span>{bid.firstName} {bid.lastName}</span>
                   </div>
 
                   <div className="flex items-center gap-8 ml-auto">
@@ -153,7 +179,7 @@ const AuctionDetailsPage: React.FC = () => {
               ))}
             </ul>
           ) : (
-            <div className="flex flex-col items-center justify-center text-center py-8">
+            <div className="flex flex-col items-center justify-center text-center py-8 flex-grow">
               <p className="font-inter font-semibold text-[18px] leading-[120%]">
                 No bids yet!
               </p>
