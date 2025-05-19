@@ -155,7 +155,7 @@ const AddAuctionModal: React.FC<AddAuctionModalProps> = ({
           </button>
           <button
             onClick={handleSubmit}
-            className={`${mode === 'edit' ? 'bg-black text-white' : 'bg-yellow-300 text-black'} px-4 py-2 rounded-full cursor-pointer hover:opacity-90 transition`}
+            className={`${mode === 'edit' ? 'bg-black text-white' : 'bg-[#F4FF47] text-black'} px-4 py-2 rounded-full cursor-pointer hover:opacity-90 transition`}
           >
             {mode === 'edit' ? 'Edit auction' : 'Start auction'}
           </button>

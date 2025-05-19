@@ -69,7 +69,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({ onClose }) =>
           </button>
           <button
             onClick={handleSave}
-            className="bg-yellow-300 px-4 py-2 rounded-full text-black hover:opacity-90 transition cursor-pointer"
+            className="bg-[#F4FF47] px-4 py-2 rounded-full text-black hover:opacity-90 transition cursor-pointer"
             disabled={loading}
           >
             {loading ? 'Saving...' : 'Save changes'}

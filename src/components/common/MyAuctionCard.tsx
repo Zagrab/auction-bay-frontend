@@ -29,7 +29,26 @@ const MyAuctionCard: React.FC<MyAuctionCardProps> = ({
   const navigate = useNavigate()
   const imageUrl = image ? `${api.defaults.baseURL}${image}` : placeholderImage
   const isDone = dayjs().isAfter(dayjs(endDate))
-  const timeLeft = dayjs().to(dayjs(endDate))
+  const diff = dayjs(endDate).diff(dayjs(), 'second')
+  const isLessThan24h = diff < 60 * 60 * 24
+
+  let timeLeft = ''
+  if (diff < 60 * 60) {
+    const minutes = Math.ceil(diff / 60)
+    timeLeft = `${minutes}m`
+  } else if (diff < 60 * 60 * 24) {
+    const hours = Math.ceil(diff / (60 * 60))
+    timeLeft = `${hours}h`
+  } else if (diff < 60 * 60 * 24 * 30) {
+    const days = Math.ceil(diff / (60 * 60 * 24))
+    timeLeft = `${days}d`
+  } else if (diff < 60 * 60 * 24 * 365) {
+    const months = Math.ceil(diff / (60 * 60 * 24 * 30))
+    timeLeft = `${months}mo`
+  } else {
+    const years = Math.ceil(diff / (60 * 60 * 24 * 365))
+    timeLeft = `${years}y`
+  }
 
   const handleDelete = async (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -57,20 +76,31 @@ const MyAuctionCard: React.FC<MyAuctionCardProps> = ({
     >
       {/* Top row */}
       <div className="flex justify-between items-center mb-2">
-        <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${isDone ? 'bg-black text-white' : 'bg-[#F9FF90] text-black'}`}>
+        <span
+          className={`font-inter font-light text-[12px] leading-[24px] px-2 rounded-full ${
+            isDone ? 'bg-black text-white' : 'bg-[#F9FF90] text-black'
+          }`}
+        >
           {isDone ? 'Done' : 'In progress'}
         </span>
         {!isDone && (
-          <span className="flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full text-gray-800">
+          <span
+            className={`flex items-center gap-1 font-inter font-light text-[12px] leading-[24px] px-2 rounded-full ${
+              isLessThan24h ? 'bg-[#FFAA98] text-black' : 'text-gray-800'
+            }`}
+          >
             {timeLeft}
-            <FiClock size={10} className="text-gray-500" />
+            <FiClock
+              size={12}
+              className={isLessThan24h ? 'text-black' : 'text-gray-500'}
+            />
           </span>
         )}
       </div>
 
       {/* Title & price */}
-      <h3 className="text-sm font-light mb-1 line-clamp-1">{title}</h3>
-      <p className="text-base font-medium mb-2">{price} €</p>
+      <h3 className="text-sm font-light mb-1 font-inter line-clamp-1">{title}</h3>
+      <p className="text-base font-medium mb-2 font-inter">{price} €</p>
 
       {/* Image */}
       <div className="rounded-xl overflow-hidden bg-gray-100 w-full aspect-[4/3] mb-2">

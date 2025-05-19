@@ -27,7 +27,26 @@ const AuctionCard: React.FC<AuctionCardProps> = ({
 }) => {
   const navigate = useNavigate()
   const imageUrl = image ? `${api.defaults.baseURL}${image}` : placeholderImage
-  const timeLeft = dayjs().to(dayjs(endDate))
+  const diff = dayjs(endDate).diff(dayjs(), 'second')
+  const isLessThan24h = diff < 60 * 60 * 24
+
+  let timeLeft = ''
+  if (diff < 60 * 60) {
+    const minutes = Math.ceil(diff / 60)
+    timeLeft = `${minutes}m`
+  } else if (diff < 60 * 60 * 24) {
+    const hours = Math.ceil(diff / (60 * 60))
+    timeLeft = `${hours}h`
+  } else if (diff < 60 * 60 * 24 * 30) {
+    const days = Math.ceil(diff / (60 * 60 * 24))
+    timeLeft = `${days}d`
+  } else if (diff < 60 * 60 * 24 * 365) {
+    const months = Math.ceil(diff / (60 * 60 * 24 * 30))
+    timeLeft = `${months}mo`
+  } else {
+    const years = Math.ceil(diff / (60 * 60 * 24 * 365))
+    timeLeft = `${years}y`
+  }
 
   let statusLabel = 'In progress'
   let statusColor = 'bg-[#F9FF90] text-black'
@@ -53,9 +72,9 @@ const AuctionCard: React.FC<AuctionCardProps> = ({
           {statusLabel}
         </span>
         {status !== 'done' && (
-          <span className="flex items-center gap-1 font-inter font-light text-[12px] leading-[24px] text-gray-800">
+          <span className={`flex items-center gap-1 font-inter font-light text-[12px] leading-[24px] px-2 rounded-full ${isLessThan24h ? 'bg-[#FFAA98] text-black' : 'text-gray-800'}`}>
             {timeLeft}
-            <FiClock size={12} className="text-gray-500" />
+            <FiClock size={12} className={isLessThan24h ? 'text-black' : 'text-gray-500'} />
           </span>
         )}
       </div>

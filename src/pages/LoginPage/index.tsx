@@ -4,6 +4,7 @@ import logo from '../../assets/images/logo.png'
 import { Button } from '../../components/common/Button'
 import { Link } from 'react-router-dom'
 import { useSignIn } from '../../hooks/useSignIn'
+import auctionsImage from '../../assets/images/auctions4.svg'
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('')
@@ -16,9 +17,11 @@ const LoginPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex bg-green-50">
+    <div className="min-h-screen flex">
       {/* Left (2/3 width) */}
-      <div className="flex-1" />
+      <div className="flex-1 flex items-center justify-center">
+        <img src={auctionsImage} alt="Auctions" className="max-w-full h-auto" />
+      </div>
 
       {/* Right (1/3 width) */}
       <div className="w-1/4 min-h-screen bg-white rounded-3xl m-3 pt-16 px-8 pb-8 flex flex-col">
