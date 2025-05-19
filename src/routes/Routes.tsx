@@ -11,6 +11,7 @@ import AuctionsPage from '../pages/AuctionsPage'
 import BiddingPage from '../pages/BiddingPage'
 import WonPage from '../pages/WonPage'
 import AuctionDetailsPage from '../pages/AuctionDetailsPage'
+import ForgotPassPage from '../pages/ForgotPassPage'
 
 const AppRoutes: React.FC = () => (
   <Routes>
@@ -18,6 +19,7 @@ const AppRoutes: React.FC = () => (
     <Route path="/"        element={<LandingPage />} />
     <Route path="/login"   element={<LoginPage />}   />
     <Route path="/register" element={<RegisterPage />} />
+    <Route path="/forgot-pass" element={<ForgotPassPage />} />
 
     {/* private with Navigation */}
     <Route

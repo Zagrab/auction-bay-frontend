@@ -69,7 +69,7 @@ const LoginPage: React.FC = () => {
                 required
               />
               <div className="text-right mt-1">
-                <Link to="/forgot" className="text-sm text-gray-500 hover:underline">
+                <Link to="/forgot-pass" className="text-sm text-gray-500 hover:underline">
                   Forgot password?
                 </Link>
               </div>
