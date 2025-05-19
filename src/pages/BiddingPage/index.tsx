@@ -42,8 +42,8 @@ const BiddingPage: React.FC = () => {
               image={auction.image}
               price={auction.myHighestBid}
               status={auction.status.toLowerCase() as 'winning' | 'outbid'}
-              endDate={new Date(Date.now() + 86400000).toISOString()} 
-            />
+              endDate={auction.endDate}
+              />
           ))}
         </div>
       )}

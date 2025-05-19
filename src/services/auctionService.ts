@@ -26,6 +26,7 @@ export interface BiddingAuction {
   image: string | null
   myHighestBid: number
   status: 'Winning' | 'Outbid'
+  endDate: string
 }
 
 
