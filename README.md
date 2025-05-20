@@ -1,54 +1,101 @@
-# React + TypeScript + Vite
+# 🧩 React Auction Bay (Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend for the **Auction Bay** web application, built with **React**, **TypeScript**, **Vite**, and **Tailwind CSS**. It allows users to register, log in, view auctions, place bids, and manage their listings.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Tech Stack
 
-## Expanding the ESLint configuration
+- React 18
+- TypeScript
+- Vite
+- Tailwind CSS
+- Axios
+- React Router DOM
+- JWT Authentication
+- Custom Hooks & Components
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 📁 Project Structure
+
+```
+src/
+├── assets/              # Static images and logos
+├── components/          # Reusable UI components
+│   └── common/          # Shared buttons, cards, etc.
+├── hooks/               # Custom React hooks
+├── layouts/             # Layouts like navigation
+├── pages/               # Route pages (Login, Register, etc.)
+├── routes/              # App routing config
+├── services/            # API calls using Axios
+└── main.tsx             # App entry point
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## ⚙️ Getting Started
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+### 1. Install dependencies
+
+```bash
+npm install
 ```
+
+### 2. Run the development server
+
+```bash
+npm run dev
+```
+
+### 3. Open in browser
+
+Go to [http://localhost:5173](http://localhost:5173)
+
+---
+
+## 🔐 Authentication
+
+This app uses JWT authentication. Protected routes are wrapped in `RequireAuth`. Tokens are stored securely and used for accessing user-specific content like:
+
+- My Auctions
+- Bidding
+- Won Auctions
+
+---
+
+## 🔄 Reset Password Flow
+
+- User requests a password reset from the `/forgot-pass` page
+- An email with a reset token is sent
+- The user is redirected to `/reset-password?token=...` to set a new password
+
+> ⚠️ **Important**: In development, email links may open as `https://` by default. Manually replace `https://` with `http://localhost:5173` in the URL to open the page correctly.
+
+---
+
+## 🌐 API Endpoint
+
+This app connects to a NestJS backend running at:
+
+```
+http://localhost:3333
+```
+
+Make sure this is correctly set in `src/services/api.ts`.
+
+---
+
+## 📜 Available Scripts
+
+```bash
+npm run dev       # Run development server
+npm run build     # Build for production
+npm run preview   # Preview production build
+```
+
+---
+
+## 🧑‍💻 Developed by
+
+Žiga Štraus

@@ -12,6 +12,7 @@ import BiddingPage from '../pages/BiddingPage'
 import WonPage from '../pages/WonPage'
 import AuctionDetailsPage from '../pages/AuctionDetailsPage'
 import ForgotPassPage from '../pages/ForgotPassPage'
+import ResetPassPage from '../pages/ResetPassPage'
 
 const AppRoutes: React.FC = () => (
   <Routes>
@@ -20,6 +21,7 @@ const AppRoutes: React.FC = () => (
     <Route path="/login"   element={<LoginPage />}   />
     <Route path="/register" element={<RegisterPage />} />
     <Route path="/forgot-pass" element={<ForgotPassPage />} />
+    <Route path="/reset-password" element={<ResetPassPage />} /> {/* treba deletat https na http oz samo localhost da deluje. email forca na https */}
 
     {/* private with Navigation */}
     <Route

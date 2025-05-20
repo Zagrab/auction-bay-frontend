@@ -47,3 +47,15 @@ export const updatePassword = async (payload: {
 }): Promise<void> => {
   await api.post('/auth/me/update-password', payload)
 }
+
+export const forgotPassword = async (email: string): Promise<void> => {
+  await api.post('/auth/forgot-password', { email })
+}
+
+export const resetPassword = async (payload: {
+  token: string
+  newPassword: string
+  confirmPassword: string
+}): Promise<void> => {
+  await api.post('/auth/reset-password', payload)
+}
